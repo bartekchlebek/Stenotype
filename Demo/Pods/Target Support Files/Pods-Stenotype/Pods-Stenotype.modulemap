@@ -1,0 +1,6 @@
+framework module Stenotype {
+  umbrella header "Pods-Stenotype-umbrella.h"
+
+  export *
+  module * { export * }
+}

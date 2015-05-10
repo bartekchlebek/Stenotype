@@ -1,5 +1,5 @@
 import Cocoa
-import Log
+import Stenotype
 
 struct Size {
   var width = 0.0
@@ -13,6 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet weak var window: NSWindow!
   
   func applicationDidFinishLaunching(aNotification: NSNotification) {
+    
     log.error(aNotification)
     log.verbose {
       println("A")

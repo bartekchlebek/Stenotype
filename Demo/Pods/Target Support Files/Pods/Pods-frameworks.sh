@@ -48,8 +48,8 @@ code_sign() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework 'Log.framework'
+  install_framework 'Stenotype.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework 'Log.framework'
+  install_framework 'Stenotype.framework'
 fi

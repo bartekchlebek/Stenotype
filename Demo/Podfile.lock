@@ -1,14 +1,14 @@
 PODS:
-  - Log (0.0.1)
+  - Stenotype (0.0.1)
 
 DEPENDENCIES:
-  - Log (from `../`)
+  - Stenotype (from `../`)
 
 EXTERNAL SOURCES:
-  Log:
+  Stenotype:
     :path: ../
 
 SPEC CHECKSUMS:
-  Log: 64813a577e592161e165ea8e76e5b8792c513103
+  Stenotype: 7686778854e35c1c605ec764716b719ed207dc66
 
 COCOAPODS: 0.37.0.beta.1

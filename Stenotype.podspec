@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
-  spec.name                  = 'Log'
+  spec.name                  = 'Stenotype'
   spec.version               = '0.0.1'
   spec.summary               = 'Swift logging mechanism'
-  spec.homepage              = 'https://github.com/bartekchlebek/Log'
+  spec.homepage              = 'https://github.com/bartekchlebek/Stenotype'
   spec.license               = { :type => 'MIT' }
   spec.author                = { 'Bartek Chlebek' => 'bartek.public@gmail.com' }
   spec.social_media_url      = 'http://twitter.com/bartekchlebek'
