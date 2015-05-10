@@ -1,6 +1,6 @@
 {
   "name": "Stenotype",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "summary": "Swift logging mechanism",
   "homepage": "https://github.com/bartekchlebek/Stenotype",
   "license": {
@@ -11,8 +11,8 @@
   },
   "social_media_url": "http://twitter.com/bartekchlebek",
   "source": {
-    "git": "https://github.com/bartekchlebek/Log.git",
-    "tag": "0.0.1"
+    "git": "https://github.com/bartekchlebek/Stenotype.git",
+    "tag": "0.1.0"
   },
   "source_files": "Source/*.swift",
   "requires_arc": true,

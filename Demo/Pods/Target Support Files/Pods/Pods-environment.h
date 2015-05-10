@@ -9,6 +9,6 @@
 // Stenotype
 #define COCOAPODS_POD_AVAILABLE_Stenotype
 #define COCOAPODS_VERSION_MAJOR_Stenotype 0
-#define COCOAPODS_VERSION_MINOR_Stenotype 0
-#define COCOAPODS_VERSION_PATCH_Stenotype 1
+#define COCOAPODS_VERSION_MINOR_Stenotype 1
+#define COCOAPODS_VERSION_PATCH_Stenotype 0
 

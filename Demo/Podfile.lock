@@ -1,5 +1,5 @@
 PODS:
-  - Stenotype (0.0.1)
+  - Stenotype (0.1.0)
 
 DEPENDENCIES:
   - Stenotype (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Stenotype: 7686778854e35c1c605ec764716b719ed207dc66
+  Stenotype: 6a21dfff88e7f2c9ae419b79641d994c1f71fc1f
 
 COCOAPODS: 0.37.0.beta.1
