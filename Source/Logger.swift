@@ -4,7 +4,7 @@ import Foundation
 
 private let queue = dispatch_queue_create("com.bartekchlebek.logger", DISPATCH_QUEUE_SERIAL)
 
-private let xcodeColorsInstalled: Bool = getenv("XcodeColors") != nil
+private let xcodeColorsEnabled: Bool = NSString(CString: getenv("XcodeColors"), encoding: NSUTF8StringEncoding) == "YES"
 
 public enum Level: Int {
   case Verbose, Info, Warning, Error
@@ -36,9 +36,9 @@ public class Logger {
         ? "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
         : "\(file)")
       
-      if configuration.colorsEnabled && xcodeColorsInstalled == false {
-        if xcodeColorsInstalled == false {
-          println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors")
+      if configuration.colorsEnabled {
+        if xcodeColorsEnabled == false {
+          println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors and call setenv(\"XcodeColors\", \"YES\", 0) after your app launches")
         }
         else {
           setenv("XcodeColors", "YES", 0)
@@ -64,7 +64,7 @@ public class Logger {
         }
         components.append("\(messageValue)")
         
-        let colors = (self.configuration.colorsEnabled && xcodeColorsInstalled) ? self.configuration.colors[level] : nil
+        let colors = (self.configuration.colorsEnabled && xcodeColorsEnabled) ? self.configuration.colors[level] : nil
         let message = " ".join(components).withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor) + "\n"
         self.configuration.logHandler(message: message)
       })
