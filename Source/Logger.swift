@@ -4,6 +4,8 @@ import Foundation
 
 private let queue = dispatch_queue_create("com.bartekchlebek.logger", DISPATCH_QUEUE_SERIAL)
 
+private let xcodeColorsInstalled: Bool = getenv("XcodeColors") != nil
+
 public enum Level: Int {
   case Verbose, Info, Warning, Error
 }
@@ -26,26 +28,46 @@ public class Logger {
     @noescape _ message: () -> T,
     _ level: Level) {
       
-      if let minimumLevel = configuration.minimumLevelToLog {
-        if minimumLevel.rawValue <= level.rawValue {
-          
-          let fileString: String
-          if configuration.shouldTrimFilePath {
-            fileString = "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
-          }
-          else {
-            fileString = "\(file)"
-          }
-          
-          let messageValue = message()
-          let date = NSDate().description
-          dispatch_sync(queue, { () -> Void in
-            let colors = self.configuration.colorsEnabled ? self.configuration.colors[level] : nil
-            let message = "\(date) \(fileString):\(line) \(function) \(messageValue)".withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor)
-            self.configuration.logHandler(message: message)
-          })
+      if configuration.minimumLevelToLog?.rawValue > level.rawValue {
+        return
+      }
+
+      let fileString = (configuration.shouldTrimFilePath
+        ? "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
+        : "\(file)")
+      
+      if configuration.colorsEnabled && xcodeColorsInstalled == false {
+        if xcodeColorsInstalled == false {
+          println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors")
+        }
+        else {
+          setenv("XcodeColors", "YES", 0)
         }
       }
+      
+      let messageValue = message()
+      let date = NSDate().description
+      dispatch_sync(queue, { () -> Void in
+        
+        var components = [String]()
+        components.append("\(date)")
+        if self.configuration.shouldDisplayFile {
+          if self.configuration.shouldDisplayLineNumber {
+            components.append("\(fileString):\(line)")
+          }
+          else {
+            components.append("\(fileString)")
+          }
+        }
+        if self.configuration.shouldDisplayFunction {
+          components.append("\(function)")
+        }
+        components.append("\(messageValue)")
+        
+        let colors = (self.configuration.colorsEnabled && xcodeColorsInstalled) ? self.configuration.colors[level] : nil
+        let message = " ".join(components).withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor) + "\n"
+        self.configuration.logHandler(message: message)
+      })
   }
 }
 

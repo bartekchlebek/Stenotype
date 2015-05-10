@@ -13,7 +13,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet weak var window: NSWindow!
   
   func applicationDidFinishLaunching(aNotification: NSNotification) {
-    
     log.error(aNotification)
     log.verbose {
       println("A")
