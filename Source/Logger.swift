@@ -4,7 +4,10 @@ import Foundation
 
 private let queue = dispatch_queue_create("com.bartekchlebek.logger", DISPATCH_QUEUE_SERIAL)
 
-private let xcodeColorsEnabled: Bool = NSString(CString: getenv("XcodeColors"), encoding: NSUTF8StringEncoding) == "YES"
+private let xcodeColorsEnabled: Bool = {
+  let envValue = getenv("XcodeColors")
+  return envValue == nil ? false : NSString(CString: envValue, encoding: NSUTF8StringEncoding) == "YES"
+}()
 
 public enum Level: Int {
   case Verbose, Info, Warning, Error
