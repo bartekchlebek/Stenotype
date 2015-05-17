@@ -34,7 +34,7 @@ public class Logger {
       if configuration.minimumLevelToLog?.rawValue > level.rawValue {
         return
       }
-
+      
       let fileString = (configuration.shouldTrimFilePath
         ? "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
         : "\(file)")
@@ -49,28 +49,20 @@ public class Logger {
       }
       
       let messageValue = message()
-      let date = NSDate().description
-      dispatch_sync(queue, { () -> Void in
-        
-        var components = [String]()
-        components.append("\(date)")
-        if self.configuration.shouldDisplayFile {
-          if self.configuration.shouldDisplayLineNumber {
-            components.append("\(fileString):\(line)")
-          }
-          else {
-            components.append("\(fileString)")
-          }
-        }
-        if self.configuration.shouldDisplayFunction {
-          components.append("\(function)")
-        }
-        components.append("\(messageValue)")
-        
+      dispatch_sync(queue) {
+        let entry = Entry(
+          level: level,
+          date: self.configuration.shouldDisplayDate ? self.configuration.dateFormatter(date: NSDate()) : nil,
+          file: self.configuration.shouldDisplayFile ? fileString : nil,
+          line: self.configuration.shouldDisplayLineNumber ? "\(line)" : nil,
+          function: self.configuration.shouldDisplayFunction ? "\(function)" : nil,
+          message: "\(messageValue)"
+        )
+        let logString = self.configuration.logFormatter(entry: entry)
         let colors = (self.configuration.colorsEnabled && xcodeColorsEnabled) ? self.configuration.colors[level] : nil
-        let message = " ".join(components).withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor) + "\n"
-        self.configuration.logHandler(message: message)
-      })
+        let logStringWithColors = logString.withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor)
+        self.configuration.logHandler(message: logString, messageWithColors: logStringWithColors)
+      }
   }
 }
 
