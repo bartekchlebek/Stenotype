@@ -24,7 +24,7 @@ public struct Logger {
   
   public var logFormatter: LogFormatter = {entry in
     let fileAndLine = ":".join(filterNils([entry.file, entry.line]))
-    return "\n".join(filterEmptyStrings(filterNils([entry.date, fileAndLine, entry.function, entry.message])))
+    return " ".join(filterEmptyStrings(filterNils([entry.date, fileAndLine, entry.function, entry.message])))
   }
   
   public var dateFormatter: DateFormatter = {defaultDateFormatter.stringFromDate($0)}
@@ -49,10 +49,10 @@ public struct Logger {
 }
 
 public struct Entry {
-  var level: Level
-  var date: String?
-  var file: String?
-  var line: String?
-  var function: String?
-  var message: String
+  public var level: Level
+  public var date: String?
+  public var file: String?
+  public var line: String?
+  public var function: String?
+  public var message: String
 }
