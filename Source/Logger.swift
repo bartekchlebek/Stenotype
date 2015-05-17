@@ -13,15 +13,15 @@ public enum Level: Int {
   case Verbose, Info, Warning, Error
 }
 
-public class Logger {
-  public var configuration: Configuration
+public class LoggersManager {
+  private var loggers = [Logger]()
   
-  public init(configuration: Configuration) {
-    self.configuration = configuration
+  public init() {
+    
   }
   
-  public convenience init() {
-    self.init(configuration: Configuration())
+  public func addLogger(logger: Logger) {
+    loggers.append(logger)
   }
   
   private func log<T>(
@@ -31,43 +31,45 @@ public class Logger {
     @noescape _ message: () -> T,
     _ level: Level) {
       
-      if configuration.minimumLevelToLog?.rawValue > level.rawValue {
-        return
-      }
-      
-      let fileString = (configuration.shouldTrimFilePath
-        ? "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
-        : "\(file)")
-      
-      if configuration.colorsEnabled {
-        if xcodeColorsEnabled == false {
-          println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors and call setenv(\"XcodeColors\", \"YES\", 0) after your app launches")
+      for logger in loggers {
+        if logger.minimumLevelToLog?.rawValue > level.rawValue {
+          return
         }
-        else {
-          setenv("XcodeColors", "YES", 0)
+        
+        let fileString = (logger.shouldTrimFilePath
+          ? "\(file)".componentsSeparatedByString("/").last ?? "\(file)"
+          : "\(file)")
+        
+        if logger.colorsEnabled {
+          if xcodeColorsEnabled == false {
+            println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors and call setenv(\"XcodeColors\", \"YES\", 0) after your app launches")
+          }
+          else {
+            setenv("XcodeColors", "YES", 0)
+          }
         }
-      }
-      
-      let messageValue = message()
-      dispatch_sync(queue) {
-        let entry = Entry(
-          level: level,
-          date: self.configuration.shouldDisplayDate ? self.configuration.dateFormatter(date: NSDate()) : nil,
-          file: self.configuration.shouldDisplayFile ? fileString : nil,
-          line: self.configuration.shouldDisplayLineNumber ? "\(line)" : nil,
-          function: self.configuration.shouldDisplayFunction ? "\(function)" : nil,
-          message: "\(messageValue)"
-        )
-        let logString = self.configuration.logFormatter(entry: entry)
-        let colors = (self.configuration.colorsEnabled && xcodeColorsEnabled) ? self.configuration.colors[level] : nil
-        let logStringWithColors = logString.withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor)
-        self.configuration.logHandler(message: logString, messageWithColors: logStringWithColors)
+        
+        let messageValue = message()
+        dispatch_sync(queue) {
+          let entry = Entry(
+            level: level,
+            date: logger.shouldDisplayDate ? logger.dateFormatter(date: NSDate()) : nil,
+            file: logger.shouldDisplayFile ? fileString : nil,
+            line: logger.shouldDisplayLineNumber ? "\(line)" : nil,
+            function: logger.shouldDisplayFunction ? "\(function)" : nil,
+            message: "\(messageValue)"
+          )
+          let logString = logger.logFormatter(entry: entry)
+          let colors = (logger.colorsEnabled && xcodeColorsEnabled) ? logger.colors[level] : nil
+          let logStringWithColors = logString.withForegroundColor(colors?.foregroundColor, backgroundColor: colors?.backgroundColor)
+          logger.logHandler(message: logString, messageWithColors: logStringWithColors)
+        }
       }
   }
 }
 
 //MARK:Empty log syntax, e.g. log.verbose()
-extension Logger {
+extension LoggersManager {
   public func verbose(
     file: StaticString = __FILE__,
     _ line: UWord = __LINE__,
@@ -102,7 +104,7 @@ extension Logger {
 }
 
 //MARK:Standard syntax with message
-extension Logger {
+extension LoggersManager {
   public func verbose<T>(
     @autoclosure message: () -> T,
     _ file: StaticString = __FILE__,
@@ -141,7 +143,7 @@ extension Logger {
 }
 
 //MARK:Trailing closure syntax
-extension Logger {
+extension LoggersManager {
   public func verbose(
     file: StaticString = __FILE__,
     _ line: UWord = __LINE__,

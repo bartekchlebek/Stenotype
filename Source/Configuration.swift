@@ -15,7 +15,7 @@ let defaultDateFormatter = {() -> NSDateFormatter in
   return dateFormatter
 }()
 
-public struct Configuration {
+public struct Logger {
   public typealias LogFormatter = (entry: Entry) -> String
   public typealias DateFormatter = (date: NSDate) -> String
   public typealias LogHandler = (message: String, messageWithColors: String) -> ()
