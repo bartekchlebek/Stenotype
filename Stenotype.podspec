@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                  = 'Stenotype'
-  spec.version               = '0.2.0'
+  spec.version               = '0.2.1'
   spec.summary               = 'Swift logging mechanism'
   spec.homepage              = 'https://github.com/bartekchlebek/Stenotype'
   spec.license               = { :type => 'MIT' }
