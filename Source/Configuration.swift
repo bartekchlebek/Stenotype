@@ -5,7 +5,7 @@ func filterNils<T>(array: [T?]) -> [T] {
 }
 
 func filterEmptyStrings(array: [String]) -> [String] {
-  return array.filter { count($0) > 0 }
+  return array.filter { $0.characters.count > 0 }
 }
 
 let defaultDateFormatter = {() -> NSDateFormatter in
@@ -23,13 +23,13 @@ public struct Logger {
   public var minimumLevelToLog: Level? = .Verbose
   
   public var logFormatter: LogFormatter = {entry in
-    let fileAndLine = ":".join(filterNils([entry.file, entry.line]))
-    return " ".join(filterEmptyStrings(filterNils([entry.date, fileAndLine, entry.function, entry.message])))
+    let fileAndLine = filterNils([entry.file, entry.line]).joinWithSeparator(":")
+    return filterEmptyStrings(filterNils([entry.date, fileAndLine, entry.function, entry.message])).joinWithSeparator(" ")
   }
   
   public var dateFormatter: DateFormatter = {defaultDateFormatter.stringFromDate($0)}
   
-  public var logHandler: LogHandler = {println($0.1)}
+  public var logHandler: LogHandler = {print($0.1)}
   
   public var colorsEnabled: Bool = true
   public var colors: [Level: (foregroundColor: Color?, backgroundColor: Color?)] = [

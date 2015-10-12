@@ -26,7 +26,7 @@ public class LoggersManager {
   
   private func log<T>(
     file: StaticString,
-    _ line: UWord,
+    _ line: UInt,
     _ function: StaticString,
     @noescape _ message: () -> T,
     _ level: Level) {
@@ -42,7 +42,7 @@ public class LoggersManager {
         
         if logger.colorsEnabled {
           if xcodeColorsEnabled == false {
-            println("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors and call setenv(\"XcodeColors\", \"YES\", 0) after your app launches")
+            print("To use colors in logs install XcodeColors plugin: https://github.com/robbiehanson/XcodeColors and call setenv(\"XcodeColors\", \"YES\", 0) after your app launches")
           }
           else {
             setenv("XcodeColors", "YES", 0)
@@ -72,7 +72,7 @@ public class LoggersManager {
 extension LoggersManager {
   public func verbose(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, {""}, .Verbose)
@@ -80,7 +80,7 @@ extension LoggersManager {
   
   public func info(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, {""}, .Info)
@@ -88,7 +88,7 @@ extension LoggersManager {
   
   public func warning(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, {""}, .Warning)
@@ -96,7 +96,7 @@ extension LoggersManager {
   
   public func error(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, {""}, .Error)
@@ -108,7 +108,7 @@ extension LoggersManager {
   public func verbose<T>(
     @autoclosure message: () -> T,
     _ file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, message, .Verbose)
@@ -117,7 +117,7 @@ extension LoggersManager {
   public func info<T>(
     @autoclosure message: () -> T,
     _ file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, message, .Info)
@@ -126,7 +126,7 @@ extension LoggersManager {
   public func warning<T>(
     @autoclosure message: () -> T,
     _ file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, message, .Warning)
@@ -135,7 +135,7 @@ extension LoggersManager {
   public func error<T>(
     @autoclosure message: () -> T,
     _ file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__) {
       
       self.log(file, line, function, message, .Error)
@@ -146,7 +146,7 @@ extension LoggersManager {
 extension LoggersManager {
   public func verbose(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__,
     @noescape trailingClosure: () -> Any) {
       
@@ -155,7 +155,7 @@ extension LoggersManager {
   
   public func info(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__,
     @noescape trailingClosure: () -> Any) {
       
@@ -164,7 +164,7 @@ extension LoggersManager {
   
   public func warning(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__,
     @noescape trailingClosure: () -> Any) {
       
@@ -173,7 +173,7 @@ extension LoggersManager {
   
   public func error(
     file: StaticString = __FILE__,
-    _ line: UWord = __LINE__,
+    _ line: UInt = __LINE__,
     _ function: StaticString = __FUNCTION__,
     @noescape trailingClosure: () -> Any) {
       
